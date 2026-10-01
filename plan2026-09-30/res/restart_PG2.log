@@ -1,0 +1,91 @@
+== stopping ==
+signalled; waiting for GPU memory to be released
+all GPU processes gone
+== starting ==
+   GRAPH_BS='<default>'  GRAPH_MAX_BS='<default>'  PREFILL_GRAPH='breakable'
+== pre-flight ==
+== environment ==
+python                             /data/nvme/sglang/.venv/bin/python3 (Python 3.12.2)
+sglang version                     0.5.21.dev797+ge0f76063c
+sub-90 wiring import               ok
+JIT kernel sources                 /data/nvme/sglang-codex/sglang/python/sglang/kernels/jit
+2.13.0+cu130 cuda=13.0 gpus=8
+torch                              2.13.0+cu130 cuda=13.0 gpus=8
+GPUs visible                       8
+compute capability                 7.5 (SM75, supported)
+nvcc                               Build cuda_12.9.r12.9/compiler.36037853_0
+ninja                              /data/nvme/sglang/.venv/bin/ninja
+checkpoint                         /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+GPU memory free                    max used 1 MiB
+power limit                        150.00 W (150 W is the validated setting; higher risks GPU6/7 hangs)
+
+check: PASS
+
+== starting ==
+model   : /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+parallel: TP2 x PP4, ctx 262144, kv pool 270000, kv dtype fp8_e4m3
+http    : http://0.0.0.0:8200
+log     : /data/nvme/sglang/logs/serve-prod.log
+ready   : grep 'fired up and ready to roll' /data/nvme/sglang/logs/serve-prod.log
+pid     : 2380806
+SERVER DIED
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/models/deepseek_v4.py", line 2409, in forward
+    bcg_deepseek_v4_attention_with_output(
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner_backend_utils/breakable_cuda_graph/breakable_cuda_graph.py", line 230, in wrapper
+    capture._end_current_segment()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner_backend_utils/breakable_cuda_graph/breakable_cuda_graph.py", line 405, in _end_current_segment
+    graph.capture_end()
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 169, in capture_end
+    super().capture_end()
+torch.AcceleratorError: CUDA error: out of memory
+Search for `cudaErrorMemoryAllocation' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+For more detailed error information, run with CUDA_LOG_FILE=stderr
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 6082, in run_scheduler_process
+    scheduler = Scheduler(server_args, port_args)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 557, in __init__
+    self.init_model_worker()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 1103, in init_model_worker
+    self.init_all_cuda_graphs()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 1086, in init_all_cuda_graphs
+    self.tp_worker.init_cuda_graphs()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/tp_worker.py", line 425, in init_cuda_graphs
+    self.model_runner.init_cuda_graphs(
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/model_runner.py", line 1100, in init_cuda_graphs
+    capture = capture_cuda_graphs(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/model_runner_components/cuda_graph_setup.py", line 399, in capture_cuda_graphs
+    prefill = capture_prefill_graph(
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/model_runner_components/cuda_graph_setup.py", line 650, in capture_prefill_graph
+    prefill_runner = PrefillCudaGraphRunner(model_runner)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py", line 621, in __init__
+    self.capture()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py", line 1548, in capture
+    self._capture_one_stream()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py", line 1584, in _capture_one_stream
+    self.capture_one_shape(num_tokens)
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner/prefill_cuda_graph_runner.py", line 1674, in capture_one_shape
+    self.backend.capture_one(
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner_backend/breakable_cuda_graph_backend.py", line 144, in capture_one
+    BreakableCUDAGraphCapture(
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner_backend_utils/breakable_cuda_graph/breakable_cuda_graph.py", line 353, in __exit__
+    self._end_current_segment()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner_backend_utils/breakable_cuda_graph/breakable_cuda_graph.py", line 405, in _end_current_segment
+    graph.capture_end()
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 169, in capture_end
+    super().capture_end()
+RuntimeError: num_active_captures_ > 0 INTERNAL ASSERT FAILED at "/__w/pytorch/pytorch/c10/cuda/CUDACachingAllocator.cpp":3211, please report a bug to PyTorch. markCaptureEnd called with no captures in progress
+
+[rank7]:[W1001 11:34:18.248999285 CUDAGraph.cpp:352] Warning: CUDA warning: invalid argument (function reset)
+[2026-10-01 11:34:18] Received sigquit from a child process. It usually means the child failed.
+[2026-10-01 11:34:18] kill_process_tree called: parent_pid=2380806, include_parent=True, pid=2380806

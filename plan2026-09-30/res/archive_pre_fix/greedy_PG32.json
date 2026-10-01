@@ -1,0 +1,26 @@
+[
+ {
+  "prompt": "Calculate step by step: 17 * 23 = ",
+  "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+ },
+ {
+  "prompt": "Write a Python function that reverses a linked list, with type hints:",
+  "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+ },
+ {
+  "prompt": "The rare word 'defenestration' means ",
+  "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+ },
+ {
+  "prompt": "List the first 12 elements of the periodic table in order, one per line:",
+  "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+ },
+ {
+  "prompt": "Translate to French, keep the sentence structure: The server was down all night, but nobody called.",
+  "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+ },
+ {
+  "prompt": "Explain in three sentences why the sky is blue at noon and red at sunset:",
+  "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+ }
+]

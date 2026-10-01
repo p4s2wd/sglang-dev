@@ -1,0 +1,91 @@
+== stopping ==
+signalled; waiting for GPU memory to be released
+all GPU processes gone
+== starting ==
+   GRAPH_BS='<default>'  GRAPH_MAX_BS='<default>'  PREFILL_GRAPH='disabled'
+== pre-flight ==
+== environment ==
+python                             /data/nvme/sglang/.venv/bin/python3 (Python 3.12.2)
+sglang version                     0.5.21.dev797+ge0f76063c
+sub-90 wiring import               ok
+JIT kernel sources                 /data/nvme/sglang-codex/sglang/python/sglang/kernels/jit
+2.13.0+cu130 cuda=13.0 gpus=8
+torch                              2.13.0+cu130 cuda=13.0 gpus=8
+GPUs visible                       8
+compute capability                 7.5 (SM75, supported)
+nvcc                               Build cuda_12.9.r12.9/compiler.36037853_0
+ninja                              /data/nvme/sglang/.venv/bin/ninja
+checkpoint                         /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+GPU memory free                    max used 1 MiB
+power limit                        150.00 W (150 W is the validated setting; higher risks GPU6/7 hangs)
+
+check: PASS
+
+== starting ==
+model   : /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+parallel: TP2 x PP4, ctx 262144, kv pool 270000, kv dtype fp8_e4m3
+http    : http://0.0.0.0:8200
+log     : /data/nvme/sglang/logs/serve-prod.log
+ready   : grep 'fired up and ready to roll' /data/nvme/sglang/logs/serve-prod.log
+pid     : 2643305
+SERVER DIED
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py", line 491, in __init__
+    self.capture()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py", line 1117, in capture
+    self._capture_one_stream()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py", line 1186, in _capture_one_stream
+    self.capture_one_shape(
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py", line 1313, in capture_one_shape
+    self.backend.capture_one(
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner_backend/full_cuda_graph_backend.py", line 176, in capture_one
+    with (
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 477, in __exit__
+    self.cuda_graph.capture_end()
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 169, in capture_end
+    super().capture_end()
+torch.AcceleratorError: CUDA error: operation failed due to a previous error during capture
+Search for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+For more detailed error information, run with CUDA_LOG_FILE=stderr
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 6083, in run_scheduler_process
+    scheduler = Scheduler(server_args, port_args)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 557, in __init__
+    self.init_model_worker()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 1103, in init_model_worker
+    self.init_all_cuda_graphs()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 1086, in init_all_cuda_graphs
+    self.tp_worker.init_cuda_graphs()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/tp_worker.py", line 425, in init_cuda_graphs
+    self.model_runner.init_cuda_graphs(
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/model_runner.py", line 1100, in init_cuda_graphs
+    capture = capture_cuda_graphs(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/model_runner_components/cuda_graph_setup.py", line 412, in capture_cuda_graphs
+    decode = capture_decode_graph(model_runner=model_runner)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/model_runner_components/cuda_graph_setup.py", line 737, in capture_decode_graph
+    runner = graph_runners[model_runner.device](model_runner)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/runner/decode_cuda_graph_runner.py", line 493, in __init__
+    raise Exception(
+Exception: Capture cuda graph failed: CUDA error: operation failed due to a previous error during capture
+Search for `cudaErrorStreamCaptureInvalidated' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+For more detailed error information, run with CUDA_LOG_FILE=stderr
+
+Possible solutions:
+1. set --mem-fraction-static to a smaller value (e.g., 0.8 or 0.7)
+2. set --cuda-graph-max-bs-decode to a smaller value (e.g., 16)
+3. disable decode CUDA graph by --cuda-graph-backend-decode=disabled. (Not recommended. Huge performance loss)
+Open an issue on GitHub https://github.com/sgl-project/sglang/issues/new/choose 
+
+
+[2026-10-01 13:16:48] Received sigquit from a child process. It usually means the child failed.
+[2026-10-01 13:16:48] kill_process_tree called: parent_pid=2643305, include_parent=True, pid=2643305

@@ -1,0 +1,7 @@
+[0]   94 chars: '391. 391 * 29 = 11339. 11339 * 31 = 351509. 351509 * 37 = 13005833. 13'
+[1] ERROR RemoteDisconnected: Remote end closed connection without response
+[2] ERROR URLError: <urlopen error [Errno 111] Connection refused>
+[3] ERROR URLError: <urlopen error [Errno 111] Connection refused>
+[4] ERROR URLError: <urlopen error [Errno 111] Connection refused>
+[5] ERROR URLError: <urlopen error [Errno 111] Connection refused>
+wrote 6 rows -> res/greedy_CD1.json

@@ -1,0 +1,8 @@
+{"i": 0, "gold": 18, "pred": 18, "ok": true, "out_tok": 57}
+{"i": 1, "gold": 3, "pred": 3, "ok": true, "out_tok": 49}
+{"i": 2, "gold": 70000, "pred": 70000, "ok": true, "out_tok": 131}
+{"i": 3, "gold": 540, "pred": 540, "ok": true, "out_tok": 41}
+{"i": 4, "gold": 20, "pred": 20, "ok": true, "out_tok": 94}
+{"i": 5, "gold": 64, "pred": 64, "ok": true, "out_tok": 93}
+{"i": 6, "gold": 260, "pred": 260, "ok": true, "out_tok": 93}
+{"i": 7, "gold": 160, "pred": 160, "ok": true, "out_tok": 112}

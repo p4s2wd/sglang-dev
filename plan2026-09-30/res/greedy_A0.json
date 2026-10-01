@@ -1,0 +1,26 @@
+[
+ {
+  "prompt": "Calculate step by step: 17 * 23 = ",
+  "text": "391. 391 * 29 = 11339. 11339 * 31 = 351509. 351509 * 37 = 13005833. 13005833 * 41 = 533239153."
+ },
+ {
+  "prompt": "Write a Python function that reverses a linked list, with type hints:",
+  "text": " `def reverse_linked_list(head: Optional[ListNode]) -> Optional[ListNode]:`\",\n    \"edge_cases_prompt\": \"What are the edge cases of the function `reverse_linked_list`?\",\n    \"free_form"
+ },
+ {
+  "prompt": "The rare word 'defenestration' means ",
+  "text": "1. the act of throwing someone out of a window. 2. the act of removing someone from a position of power. The word is used in the second sense here. The speaker is saying that the removal of the president from power"
+ },
+ {
+  "prompt": "List the first 12 elements of the periodic table in order, one per line:",
+  "text": "\"\n        },\n        {\n            \"role\": \"assistant\",\n            \"content\": \"1. Hydrogen\\n2. Helium\\n3. Lithium\\n4. Beryllium\\n5. Boron\\n6. Carbon\\n7"
+ },
+ {
+  "prompt": "Translate to French, keep the sentence structure: The server was down all night, but nobody called.",
+  "text": "\",\"translation\":\"Le serveur était en panne toute la nuit, mais personne n'a appelé.\"} \n``` \n%% Cell type:code id: tags: \n``` \n@@ -0,0 +1,4 @@"
+ },
+ {
+  "prompt": "Explain in three sentences why the sky is blue at noon and red at sunset:",
+  "text": "\",\n    \"user\": \"You are a helpful assistant.\"\n  },\n  \"response\": {\n    \"choices\": [\n      {\n        \"message\": {\n          \"content\": \"The sky appears blue at noon because sunlight travels through a shorter"
+ }
+]

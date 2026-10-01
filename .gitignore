@@ -1,0 +1,28 @@
+# The sglang source checkout is its own repository (a fork of sgl-project).
+# It is tracked over there, not here -- see README.md.
+/sglang/
+
+# 8.5 GB virtualenv. The interpreter that runs the server is
+# /data/nvme/sglang/.venv; this one is only used by some probe scripts.
+/.venv/
+
+# 1.3 GB profiler traces. Regenerate with the prof_*.sh / profile_*.sh
+# scripts at the top level; nothing in git depends on the traces themselves.
+/profiles/
+
+# Server logs. The live one is /data/nvme/sglang/logs/serve-prod.log and is
+# overwritten on every restart, so nothing here is worth keeping in history.
+/logs/
+
+# 382 MB of CUDA coredumps (two ~190 MB files). plan2026-09-30/NOTES.md
+# section 6.7 records why they are dead weight: both wrote completely, with
+# symbols and line tables intact, but e_phnum = 0, so cuda-gdb 12.0 / 12.9 /
+# 13.2 and system gdb all refuse to load them. Keeping the bytes would imply
+# they are still worth a debugger.
+/plan2026-09-30/res/coredumps/
+
+# Git bundles from the 2026-09-24 sglang sync. One-off migration artifacts.
+/backup/
+
+__pycache__/
+*.pyc

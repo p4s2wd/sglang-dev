@@ -1,0 +1,7 @@
+[0]   94 chars: '391. 391 * 29 = 11339. 11339 * 31 = 351509. 351509 * 37 = 13005833. 13'
+[1]  183 chars: ' `def reverse_linked_list(head: Optional[ListNode]) -> Optional[ListNo'
+[2]  200 chars: '1. the act of throwing someone out of a window. 2. the act of removing'
+[3]  152 chars: '"\n        },\n        {\n            "role": "assistant",\n            "c'
+[4]  157 chars: '","translation":"Le serveur était en panne toute la nuit, mais personn'
+[5] ERROR RemoteDisconnected: Remote end closed connection without response
+wrote 6 rows -> res/greedy_PG5.json

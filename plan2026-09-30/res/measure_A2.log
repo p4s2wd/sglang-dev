@@ -1,0 +1,41 @@
+############################################
+# measuring arm TAG=A2
+############################################
+-- server pid: 995559
+SGLANG_PP_EARLY_PROXY_SEND=0
+
+== [1/4] greedy capture x2 (within-instance determinism) ==
+  captured A21
+  captured A22
+[0] ERROR MISMATCH
+     a=None
+     b=URLError: <urlopen error [Errno 111] Connection refused>
+[1] ERROR MISMATCH
+     a=None
+     b=URLError: <urlopen error [Errno 111] Connection refused>
+[2] ERROR MISMATCH
+     a=None
+     b=URLError: <urlopen error [Errno 111] Connection refused>
+[3] ERROR MISMATCH
+     a=None
+     b=URLError: <urlopen error [Errno 111] Connection refused>
+[4] ERROR MISMATCH
+     a=None
+     b=URLError: <urlopen error [Errno 111] Connection refused>
+[5] IDENTICAL (0 chars)
+
+PARITY FAIL: 5/6 prompts differ
+  WITHIN-INSTANCE NONDETERMINISM -- treat parity as unusable
+
+== [2/4] decode probe (bs 1,2,4,8 x 3 rounds, interleaved) ==
+server not healthy: <urlopen error [Errno 111] Connection refused>
+
+== [3/4] prefill concurrency probe (lens 1000,4000 x K 1,2,4,8) ==
+
+== [4/4] graph coverage during this arm ==
+     24 cuda graph: False
+     24 cuda graph: True
+     24 #running-req: 0
+     24 #running-req: 1
+
+MEASURE_DONE tag=A2

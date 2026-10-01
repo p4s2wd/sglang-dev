@@ -1,0 +1,7 @@
+[0] ERROR URLError: <urlopen error [Errno 111] Connection refused>
+[1] ERROR URLError: <urlopen error [Errno 111] Connection refused>
+[2] ERROR URLError: <urlopen error [Errno 111] Connection refused>
+[3] ERROR URLError: <urlopen error [Errno 111] Connection refused>
+[4] ERROR URLError: <urlopen error [Errno 111] Connection refused>
+[5] ERROR URLError: <urlopen error [Errno 111] Connection refused>
+wrote 6 rows -> res/greedy_SV1.json

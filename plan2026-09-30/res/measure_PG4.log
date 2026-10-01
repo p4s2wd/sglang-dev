@@ -1,0 +1,30 @@
+############################################
+# measuring arm TAG=PG4
+############################################
+-- server pid: 2447203
+SGLANG_PP_EARLY_PROXY_SEND=0
+
+== [1/4] greedy capture x2 (within-instance determinism) ==
+  captured PG41
+  captured PG42
+[0] IDENTICAL (82 chars)
+[1] ERROR MISMATCH
+     a=None
+     b=RemoteDisconnected: Remote end closed connection without response
+[2] ERROR MISMATCH
+     a=None
+     b=URLError: <urlopen error [Errno 111] Connection refused>
+[3] ERROR MISMATCH
+     a=None
+     b=URLError: <urlopen error [Errno 111] Connection refused>
+[4] ERROR MISMATCH
+     a=None
+     b=URLError: <urlopen error [Errno 111] Connection refused>
+[5] ERROR MISMATCH
+     a=None
+     b=URLError: <urlopen error [Errno 111] Connection refused>
+
+PARITY FAIL: 5/6 prompts differ
+  WITHIN-INSTANCE NONDETERMINISM -- treat parity as unusable
+  SERVER DIED DURING GREEDY CAPTURE -- aborting this arm
+  (archive /data/nvme/sglang/logs/serve-prod.log BEFORE restarting)

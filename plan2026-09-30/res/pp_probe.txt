@@ -1,0 +1,65 @@
+== /get_server_info (key fields) ==
+
+log offset before run: 540072
+
+== fired 8 concurrent requests, 256 newtok each ==
+  wall=14.99s  tokens=2048  aggregate=136.7 tok/s
+  per-request latency: min=14.95s median=14.97s max=14.98s
+
+== Decode batch lines in window ==
+  running-req histogram : {}
+  queue-req   histogram : {}
+  cuda graph            : {}
+  total decode lines    : 0
+
+== Prefill batch lines in window ==
+  #new-seq histogram    : {1: 8, 2: 12}
+  #new-token histogram  : {79: 4, 80: 4, 159: 4, 160: 8}
+  Prefill batch, #new-seq: 1, #new-token: 79, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 0.19
+  Prefill batch, #new-seq: 1, #new-token: 79, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 0.19
+  Prefill batch, #new-seq: 2, #new-token: 159, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 400, cuda graph: False, input throughput (token/s): 1323.81
+  Prefill batch, #new-seq: 1, #new-token: 79, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 0.19
+  Prefill batch, #new-seq: 2, #new-token: 159, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 400, cuda graph: False, input throughput (token/s): 1506.23
+  Prefill batch, #new-seq: 2, #new-token: 160, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 240, cuda graph: False, input throughput (token/s): 1375.76
+
+== raw window (first 40 scheduler lines) ==
+  Prefill batch, #new-seq: 1, #new-token: 79, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 0.19
+  Prefill batch, #new-seq: 1, #new-token: 79, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 0.19
+  Prefill batch, #new-seq: 2, #new-token: 159, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 400, cuda graph: False, input throughput (token/s): 1323.81
+  Prefill batch, #new-seq: 1, #new-token: 79, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 0.19
+  Prefill batch, #new-seq: 2, #new-token: 159, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 400, cuda graph: False, input throughput (token/s): 1506.23
+  Prefill batch, #new-seq: 2, #new-token: 160, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 240, cuda graph: False, input throughput (token/s): 1375.76
+  Prefill batch, #new-seq: 1, #new-token: 79, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 0.19
+  Prefill batch, #new-seq: 2, #new-token: 160, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 240, cuda graph: False, input throughput (token/s): 1236.23
+  Prefill batch, #new-seq: 2, #new-token: 160, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 80, cuda graph: False, input throughput (token/s): 1495.00
+  Prefill batch, #new-seq: 2, #new-token: 159, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 400, cuda graph: False, input throughput (token/s): 1196.64
+  Prefill batch, #new-seq: 1, #new-token: 80, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 8964.01
+  Prefill batch, #new-seq: 2, #new-token: 159, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 400, cuda graph: False, input throughput (token/s): 11845.16
+  Prefill batch, #new-seq: 2, #new-token: 160, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 80, cuda graph: False, input throughput (token/s): 12165.46
+  Prefill batch, #new-seq: 2, #new-token: 160, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 240, cuda graph: False, input throughput (token/s): 13622.86
+  Prefill batch, #new-seq: 2, #new-token: 160, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 240, cuda graph: False, input throughput (token/s): 14354.83
+  Prefill batch, #new-seq: 1, #new-token: 80, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 7482.02
+  Prefill batch, #new-seq: 2, #new-token: 160, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 80, cuda graph: False, input throughput (token/s): 14759.36
+  Prefill batch, #new-seq: 2, #new-token: 160, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 80, cuda graph: False, input throughput (token/s): 14903.12
+  Prefill batch, #new-seq: 1, #new-token: 80, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 8213.34
+  Prefill batch, #new-seq: 1, #new-token: 80, #cached-token: 0, full token usage: 0.01, swa token usage: 0.13, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 8601.46
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 0.19, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 0.19, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 0.19, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 0.19, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 153.37, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 153.44, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 152.90, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 152.51, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 152.06, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 152.10, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 152.10, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 152.13, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 151.60, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 151.82, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 151.94, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 151.94, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 150.85, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 150.95, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 150.80, #queue-req: 0
+  Decode batch, #running-req: 1, #full token: 2048, full token usage: 0.01, #swa token: 2048, swa token usage: 0.13, cuda graph: True, gen throughput (token/s): 150.72, #queue-req: 0

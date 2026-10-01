@@ -1,0 +1,128 @@
+<unknown>:318: SyntaxWarning: invalid escape sequence '\('
+== totals ==
+classes      7277
+files        3677
+functions    45905
+loc          1415435
+
+== ScheduleBatch direct fields parsed: 87 ==
+
+== files > 2000 LOC: 90 ==
+    5806 python/sglang/srt/managers/scheduler.py
+    5611 python/sglang/kernels/ops/attention/flash_attn/cute/flash_fwd_sm100.py
+    5552 python/sglang/srt/mem_cache/memory_pool.py
+    4824 python/sglang/srt/utils/common.py
+    4555 python/sglang/kernels/ops/attention/fa4_sm120/flash_fwd.py
+    4488 python/sglang/srt/server_args.py
+    4417 python/sglang/srt/model_loader/loader.py
+    4237 python/sglang/srt/models/deepseek_v4.py
+    4166 python/sglang/kernels/ops/attention/cutedsl_gdn_mtp_ring.py
+    3911 python/sglang/kernels/ops/attention/flash_attn/cute/flash_fwd_mla_sm100.py
+    3837 python/sglang/srt/layers/attention/dsa_backend.py
+    3822 python/sglang/srt/models/kimi_k3.py
+    3810 python/sglang/multimodal_gen/runtime/server_args/server_args.py
+    3744 python/sglang/srt/managers/tokenizer_manager.py
+    3727 python/sglang/srt/layers/attention/flashattention_backend.py
+
+== functions > 100 LOC: 1765 ==
+   1541 python/sglang/kernels/ops/attention/flash_attn/cute/interface.py:310:_flash_attn_fwd
+   1270 python/sglang/kernels/ops/attention/cutedsl_fp8_paged_mqa_logits.py:547:kernel
+   1265 python/sglang/kernels/kda_kernels/qwen3x_nvfp4_gemm_sm120.py:822:kernel
+   1212 python/sglang/kernels/ops/attention/linear/kda_nvidia_prefill/fuse_kernel123_persistent.py:257:fused_kernel123
+   1148 python/sglang/kernels/ops/quantization/nvfp4_gemm_swiglu_nvfp4_quant.py:721:kernel
+   1081 python/sglang/kernels/ops/attention/cutedsl_gdn_mtp_ring.py:888:gdn_wide_vec_kernel
+   1079 python/sglang/kernels/ops/attention/flash_attn/cute/sm100_hd256_2cta_fmha_forward.py:602:kernel
+    983 python/sglang/multimodal_gen/runtime/server_args/server_args.py:1936:add_cli_args
+    952 python/sglang/multimodal_gen/runtime/pipelines_core/stages/model_specific_stages/ltx_2/denoising.py:1708:_run_denoising_step
+    943 python/sglang/kernels/ops/attention/flash_attn/cute/flash_fwd_sm100.py:687:__call__
+    915 python/sglang/kernels/ops/attention/cutedsl_gdn.py:33:_define_kernels
+    894 python/sglang/kernels/ops/attention/linear/kda_nvidia_prefill/fuse_k4_only_persistent.py:190:k4_persistent_kernel
+    885 python/sglang/kernels/ops/attention/cutedsl_kda.py:47:_define_kernels
+    848 python/sglang/srt/observability/metrics_collector.py:250:__init__
+    754 python/sglang/multimodal_gen/test/server/test_server_utils.py:1026:get_generate_fn
+
+== @dataclass classes: 1167 in 642 files ==
+   14 python/sglang/multimodal_gen/configs/pipeline_configs/wan.py
+   12 python/sglang/multimodal_gen/configs/sample/wan.py
+   12 python/sglang/srt/speculative/decoupled_spec_io.py
+    9 python/sglang/srt/mem_cache/base_prefix_cache.py
+    8 python/sglang/multimodal_gen/runtime/disaggregation/transport/protocol.py
+    7 python/sglang/kernels/ops/attention/flash_attn/cute/pipeline.py
+    7 python/sglang/kernels/ops/attention/flash_attn/cute/tile_scheduler.py
+    7 python/sglang/multimodal_gen/configs/models/encoders/base.py
+
+== defensive getattr(obj,'x'[,d]): 4406 ==
+  python/sglang/_platform_stubs.py:136
+  python/sglang/benchmark/datasets/common.py:89
+  python/sglang/benchmark/datasets/custom.py:30
+  python/sglang/benchmark/datasets/generated_shared_prefix.py:58
+  python/sglang/benchmark/datasets/generated_shared_prefix.py:59
+  python/sglang/benchmark/datasets/generated_shared_prefix.py:57
+  python/sglang/benchmark/datasets/generated_shared_prefix.py:92
+  python/sglang/benchmark/datasets/generated_shared_prefix.py:94
+== hasattr(obj,'x'): 1492 ==
+
+== bare TODO (no owner): 0 ==
+== FIXME/XXX/HACK: 0 ==
+
+== non-ASCII/fancy comment files: 0 (sites 0) ==
+
+== Args:/Returns: on private helpers: 182 ==
+  python/sglang/benchmark/one_batch_server.py:462 _warmup_cache
+  python/sglang/benchmark/serving.py:898 _build_profile_urls
+  python/sglang/benchmark/serving.py:917 _call_profile_pd
+  python/sglang/kernels/aot/python/sgl_kernel/testing/rotary_embedding.py:34 _apply_rotary_emb
+  python/sglang/kernels/jit/benchmark/marker.py:116 _calculate_rotation_count
+  python/sglang/kernels/ops/attention/dcp_kernels.py:200 _correct_attn_cp_out_kernel
+  python/sglang/kernels/ops/attention/dcp_kernels.py:638 _lse_weighted_combine_cpu
+  python/sglang/kernels/ops/attention/extend_attention.py:54 _get_block_sizes_for_extend_attention
+
+== Mixin classes: 121 ==
+  python/sglang/kernels/ops/attention/flash_attn/cute/pipeline.py:120 _PipelineIndexPhaseMixin
+  python/sglang/multimodal_gen/configs/post_training/pipeline_configs/qwen_image_rollout_pipeline_mixin.py:14 QwenImageRolloutPipelineMixin
+  python/sglang/multimodal_gen/configs/post_training/pipeline_configs/zimage_rollout_pipeline_mixin.py:14 ZImageRolloutPipelineMixin
+  python/sglang/multimodal_gen/runtime/cache/spectrum.py:323 SpectrumMixin
+  python/sglang/multimodal_gen/runtime/cache/teacache.py:57 TeaCacheMixin
+  python/sglang/multimodal_gen/runtime/disaggregation/scheduler_mixin.py:425 SchedulerDisaggMixin
+  python/sglang/multimodal_gen/runtime/managers/memory_managers/layerwise_offload.py:1483 LayerwiseOffloadableModuleMixin
+  python/sglang/multimodal_gen/runtime/models/encoders/base.py:157 EncoderTensorParallelMixin
+  python/sglang/multimodal_gen/runtime/pipelines_core/stages/dedup.py:16 StageDedupMixin
+  python/sglang/multimodal_gen/runtime/post_training/gpu_worker_post_training_mixin.py:37 GPUWorkerPostTrainingMixin
+  python/sglang/multimodal_gen/runtime/post_training/rollout_denoising_mixin.py:39 RolloutDenoisingMixin
+  python/sglang/multimodal_gen/runtime/post_training/scheduler_post_training_mixin.py:8 SchedulerPostTrainingMixin
+
+== ScheduleBatch in-place mutation outside its file: 66 ==
+  python/sglang/srt/beam_search/batch_tail.py:79 torch.repeat_interleave(batch.seq_lens[leader_idx_dev], widths_dev),
+  python/sglang/srt/beam_search/batch_tail.py:110 batch.seq_lens = batch.seq_lens[:n]
+  python/sglang/srt/beam_search/batch_tail.py:115 batch.input_ids = batch.input_ids[:n]
+  python/sglang/srt/debug_utils/comparator/aligner/token_aligner/smart/seq_info_builder.py:32 self.input_ids.extend(input_ids)
+  python/sglang/srt/disaggregation/decode_kvcache_offload_manager.py:253 self.tree_cache.protected_size_ -= len(req.prefix_indices)
+  python/sglang/srt/hardware_backend/npu/dsv4/dsv4_common_hooks.py:223 live_seq_lens_cpu = batch.seq_lens[: len(req_indices)].cpu()
+  python/sglang/srt/kv_canary/plan_input.py:45 self.req_pool_indices.zero_()
+  python/sglang/srt/kv_canary/plan_input.py:46 self.prefix_lens.zero_()
+  python/sglang/srt/kv_canary/plan_input.py:77 self.req_pool_indices[:bs].copy_(req_pool_indices)
+  python/sglang/srt/layers/attention/deepseek_v4_backend.py:465 self.req_pool_indices.copy_(other.req_pool_indices)
+  python/sglang/srt/layers/attention/deepseek_v4_backend.py:466 self.seq_lens.copy_(other.seq_lens)
+  python/sglang/srt/layers/attention/deepseek_v4_backend.py:467 self.out_cache_loc.copy_(other.out_cache_loc)
+  python/sglang/srt/layers/attention/deepseek_v4_backend.py:487 self.req_pool_indices.copy_(other.req_pool_indices)
+  python/sglang/srt/layers/attention/deepseek_v4_backend.py:488 self.seq_lens.copy_(other.seq_lens)
+  python/sglang/srt/layers/attention/deepseek_v4_backend.py:489 self.out_cache_loc.copy_(other.out_cache_loc)
+  python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py:396 self.req_pool_indices.copy_(other.req_pool_indices)
+  python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py:397 self.seq_lens.copy_(other.seq_lens)
+  python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py:398 self.out_cache_loc.copy_(other.out_cache_loc)
+  python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py:410 self.req_pool_indices.copy_(other.req_pool_indices)
+  python/sglang/srt/layers/attention/deepseek_v4_backend_hip_radix.py:411 self.seq_lens.copy_(other.seq_lens)
+
+== top self.<attr> references ==
+    2323 self.config
+    1949 self.head_dim
+    1832 self.assertEqual
+    1417 self.model
+    1355 self.device
+    1118 self.hidden_size
+    1114 self.page_size
+     744 self.quant_config
+     711 self.pp_group
+     702 self.num_heads
+     665 self.forward_metadata
+     598 self.tp_size

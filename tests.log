@@ -1,0 +1,49 @@
+##### test_mxfp4_w4a16.py
+scale_dtype=f32: max abs err 0.00194 -> PASS
+scale_dtype=u8: max abs err 0.00382 -> PASS
+----- PASS test_mxfp4_w4a16.py
+##### test_moe_sub80_e2e.py
+inter nan: False act nan: False down nan: False
+per-token err: ['0.001', '0.026', '0.001', '0.001', '0.003']
+max abs err 0.02550  max rel 8.09e-04
+sub80 MoE e2e vs reference: PASS
+----- PASS test_moe_sub80_e2e.py
+##### test_mqa_logits.py
+max abs 0.00000 rel 1.05e-07
+fp16_mqa_logits_triton vs ref: PASS
+----- PASS test_mqa_logits.py
+##### test_mqa_logits_real_shape.py
+real shape (Q=64,H=64,D=128,K=4096): max abs 0.00001 rel 1.58e-07
+MQA LOGITS REAL SHAPE: PASS
+----- PASS test_mqa_logits_real_shape.py
+##### test_jit_store_real.py
+store kernel ran on SM75; token0 nope recon rel err 5.130e-01
+rope bf16 passthrough: True
+JIT STORE REAL RUN: FAIL
+----- FAIL(rc=1) test_jit_store_real.py
+##### test_jit_qindexer_real.py
+q_fp8 finite=True mean|q|=127.587 weights finite=True
+INDEXER Q JIT REAL RUN: PASS
+----- PASS test_jit_qindexer_real.py
+##### b8/test_w4a16_ptx.py
+E=6 N=4096 K=4096: max abs 0.00315 rel 3.60e-04 -> PASS
+PTX:    0.67 ms   weight-bw     75 GB/s
+Triton:    6.29 ms   weight-bw      8 GB/s
+B8 PTX VALIDATION: PASS
+----- PASS b8/test_w4a16_ptx.py
+##### b8/test_direct.py
+E=6 N=4096 K=4096: rel 3.60e-04 -> PASS
+PTX-direct:    0.94 ms     53 GB/s
+Triton:    6.29 ms      8 GB/s
+DIRECT VALIDATION: PASS
+----- PASS b8/test_direct.py
+##### b8/test_e2e_ptx.py
+PTX-direct MoE e2e: abs 0.09900 rel 6.13e-04 -> PASS
+----- PASS b8/test_e2e_ptx.py
+##### test_real_weights.py
+dequant grid check: |v|/scale in e2m1 set = True
+real w1 GEMM: max abs 0.00012 rel 3.67e-04 -> PASS
+real MoE replay (6 experts, topk=3, T=24): max abs 0.00001 rel 5.55e-04 -> PASS
+REAL-WEIGHT VALIDATION: PASS
+----- PASS test_real_weights.py
+SUITE_DONE fails=1

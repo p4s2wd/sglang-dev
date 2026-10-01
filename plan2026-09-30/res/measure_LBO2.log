@@ -1,0 +1,22 @@
+############################################
+# measuring arm TAG=LBO2
+############################################
+-- server pid: 2466990
+SGLANG_PP_EARLY_PROXY_SEND=0
+
+== [1/4] greedy capture x2 (within-instance determinism) ==
+  captured LBO21
+  captured LBO22
+[0] ERROR MISMATCH
+     a=None
+     b=URLError: <urlopen error [Errno 111] Connection refused>
+[1] IDENTICAL (0 chars)
+[2] IDENTICAL (0 chars)
+[3] IDENTICAL (0 chars)
+[4] IDENTICAL (0 chars)
+[5] IDENTICAL (0 chars)
+
+PARITY FAIL: 1/6 prompts differ
+  WITHIN-INSTANCE NONDETERMINISM -- treat parity as unusable
+  SERVER DIED DURING GREEDY CAPTURE -- aborting this arm
+  (archive /data/nvme/sglang/logs/serve-prod.log BEFORE restarting)

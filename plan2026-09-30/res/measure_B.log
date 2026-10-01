@@ -1,0 +1,50 @@
+############################################
+# measuring arm TAG=B
+############################################
+-- server pid: 959558
+SGLANG_PP_EARLY_PROXY_SEND=1
+
+== [1/4] greedy capture x2 (within-instance determinism) ==
+  captured B1
+  captured B2
+[0] IDENTICAL (94 chars)
+[1] IDENTICAL (183 chars)
+[2] IDENTICAL (198 chars)
+[3] IDENTICAL (152 chars)
+[4] IDENTICAL (141 chars)
+[5] IDENTICAL (217 chars)
+
+PARITY OK: all 6 prompts byte-identical
+  within-instance determinism: OK
+
+== [2/4] decode probe (bs 1,2,4,8 x 3 rounds, interleaved) ==
+  round 2 bs=4   19.25s   890 tok     46.2 tok/s agg     86.5 ms/tok/req
+  round 2 bs=8   24.95s  1848 tok     74.1 tok/s agg    108.0 ms/tok/req
+
+  bs    median       min       max   spread
+   1      26.3      26.1      26.5     1.5%
+   2      30.2      28.7      30.7     6.9%
+   4      48.1      46.2      48.3     4.3%
+   8      74.1      72.5      94.2    29.2%
+
+decode-graph usage during measurement: 100.0% of 720 Decode batch lines
+
+wrote res/dec_B.json
+
+== [3/4] prefill concurrency probe (lens 1000,4000 x K 1,2,4,8) ==
+=== aggregate prefill throughput (tok/s), median of rounds ===
+  prompt         K=1         K=2         K=4         K=8
+    1000       753.3       972.4      1148.3      1268.4
+    4000      1154.5      1266.7      1340.1      1388.7
+
+=== speedup over K=1 (does concurrency still pay?) ===
+    1000       1.00x       1.29x       1.52x       1.68x
+
+== [4/4] graph coverage during this arm ==
+   3764 cuda graph: False
+   1296 cuda graph: True
+   3764 #running-req: 0
+    956 #running-req: 1
+    340 #running-req: 2
+
+MEASURE_DONE tag=B

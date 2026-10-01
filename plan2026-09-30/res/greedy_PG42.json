@@ -1,0 +1,26 @@
+[
+ {
+  "prompt": "Calculate step by step: 17 * 23 = ",
+  "text": "391. 391 * 4 = 1564. 1564 * 5 = 7820. 7820 * 6 = 46920. 46920 * 7 = 328440. 328440"
+ },
+ {
+  "prompt": "Write a Python function that reverses a linked list, with type hints:",
+  "error": "RemoteDisconnected: Remote end closed connection without response"
+ },
+ {
+  "prompt": "The rare word 'defenestration' means ",
+  "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+ },
+ {
+  "prompt": "List the first 12 elements of the periodic table in order, one per line:",
+  "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+ },
+ {
+  "prompt": "Translate to French, keep the sentence structure: The server was down all night, but nobody called.",
+  "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+ },
+ {
+  "prompt": "Explain in three sentences why the sky is blue at noon and red at sunset:",
+  "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+ }
+]

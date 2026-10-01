@@ -1,0 +1,54 @@
+############################################
+# measuring arm TAG=PG3
+############################################
+-- server pid: 2728161
+SGLANG_PP_EARLY_PROXY_SEND=0
+
+== [1/4] greedy capture x2 (within-instance determinism) ==
+  captured PG31
+  captured PG32
+[0] DIFFER at char 11 (len 82 vs 94)
+     a: ...'391. 391 * 4 = 1564. 1564 * 5 = 7820. 7820 * 6 = 46'
+     b: ...'391. 391 * 29 = 11339. 11339 * 31 = 351509. 351509 '
+[1] IDENTICAL (183 chars)
+[2] IDENTICAL (198 chars)
+[3] IDENTICAL (152 chars)
+[4] IDENTICAL (141 chars)
+[5] IDENTICAL (217 chars)
+
+PARITY FAIL: 1/6 prompts differ
+  WITHIN-INSTANCE NONDETERMINISM -- treat parity as unusable
+
+== [2/4] decode probe (1,2,4,8 x 3 rounds, interleaved) ==
+  round 2 bs=1    9.77s   256 tok     26.2 tok/s agg     38.2 ms/tok/req
+  round 2 bs=2    5.72s   217 tok     37.9 tok/s agg     52.7 ms/tok/req
+  round 2 bs=4   13.09s   921 tok     70.4 tok/s agg     56.8 ms/tok/req
+  round 2 bs=8   15.83s  1618 tok    102.2 tok/s agg     78.3 ms/tok/req
+
+  bs    median       min       max   spread
+   1      26.5      26.2      27.0     3.0%
+   2      42.1      37.9      43.1    12.2%
+   4      70.4      67.6      71.4     5.3%
+   8     108.7     102.2     116.8    13.5%
+
+decode-graph usage during measurement: 100.0% of 730 Decode batch lines
+
+wrote res/dec_PG3.json
+
+== [3/4] prefill concurrency probe (lens 1000,4000 x K 1,2,4,8) ==
+=== aggregate prefill throughput (tok/s), median of rounds ===
+  prompt         K=1         K=2         K=4         K=8
+    1000       273.4       353.7       416.4       453.7
+    4000       438.5       471.2       496.2       505.4
+
+=== speedup over K=1 (does concurrency still pay?) ===
+    1000       1.00x       1.29x       1.52x       1.66x
+
+== [4/4] graph coverage during this arm ==
+    288 cuda graph: False
+   4756 cuda graph: True
+   3756 #running-req: 0
+    620 #running-req: 1
+    668 #running-req: 2
+
+MEASURE_DONE tag=PG3

@@ -1,0 +1,91 @@
+== stopping ==
+signalled; waiting for GPU memory to be released
+all GPU processes gone
+== starting ==
+   GRAPH_BS='<default>'  GRAPH_MAX_BS='<default>'  PREFILL_GRAPH='disabled'
+== pre-flight ==
+== environment ==
+python                             /data/nvme/sglang/.venv/bin/python3 (Python 3.12.2)
+sglang version                     0.5.21.dev797+ge0f76063c
+sub-90 wiring import               ok
+JIT kernel sources                 /data/nvme/sglang-codex/sglang/python/sglang/kernels/jit
+2.13.0+cu130 cuda=13.0 gpus=8
+torch                              2.13.0+cu130 cuda=13.0 gpus=8
+GPUs visible                       8
+compute capability                 7.5 (SM75, supported)
+nvcc                               Build cuda_12.9.r12.9/compiler.36037853_0
+ninja                              /data/nvme/sglang/.venv/bin/ninja
+checkpoint                         /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+GPU memory free                    max used 1 MiB
+power limit                        150.00 W (150 W is the validated setting; higher risks GPU6/7 hangs)
+
+check: PASS
+
+== starting ==
+model   : /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+parallel: TP2 x PP4, ctx 262144, kv pool 270000, kv dtype fp8_e4m3
+http    : http://0.0.0.0:8200
+log     : /data/nvme/sglang/logs/serve-prod.log
+ready   : grep 'fired up and ready to roll' /data/nvme/sglang/logs/serve-prod.log
+pid     : 3992674
+SERVER DIED
+
+[2026-10-01 23:19:43] kill_process_tree called: parent_pid=3992674, include_parent=True, pid=3992674
+[2026-10-01 23:19:43] Received sigquit from a child process. It usually means the child failed.
+[2026-10-01 23:19:43] kill_process_tree called: parent_pid=3992674, include_parent=True, pid=3992674
+[2026-10-01 23:19:43 PP1 TP0] Scheduler hit an exception: Traceback (most recent call last):
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 6083, in run_scheduler_process
+    scheduler = Scheduler(server_args, port_args)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 557, in __init__
+    self.init_model_worker()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 1099, in init_model_worker
+    self.init_memory_pools()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 1065, in init_memory_pools
+    self.init_target_memory_pool()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 1061, in init_target_memory_pool
+    self.tp_worker.alloc_memory_pool()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/tp_worker.py", line 403, in alloc_memory_pool
+    self.model_runner.alloc_memory_pool(memory_pool_config)
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/model_runner.py", line 886, in alloc_memory_pool
+    result = self.kv_cache_configurator.configure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/mem_cache/kv_cache_configurator.py", line 370, in configure
+    config = self._resolve_memory_pool_config(pre_model_load_memory)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/mem_cache/kv_cache_configurator.py", line 2355, in _resolve_memory_pool_config
+    available_bytes = self._profile_available_bytes(pre_model_load_memory)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/mem_cache/kv_cache_configurator.py", line 2220, in _profile_available_bytes
+    raise ValueError(
+ValueError: Loaded weights leave no GPU memory for the KV cache under --mem-fraction-static=0.97. Raise --mem-fraction-static above 0.999 (minimum viable = 1 - available/pre = 0.9987). If using speculative decoding, draft weights are now counted.
+
+[2026-10-01 23:19:43 PP0 TP1] Scheduler hit an exception: Traceback (most recent call last):
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 6083, in run_scheduler_process
+    scheduler = Scheduler(server_args, port_args)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 557, in __init__
+    self.init_model_worker()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 1099, in init_model_worker
+    self.init_memory_pools()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 1065, in init_memory_pools
+    self.init_target_memory_pool()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/scheduler.py", line 1061, in init_target_memory_pool
+    self.tp_worker.alloc_memory_pool()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/managers/tp_worker.py", line 403, in alloc_memory_pool
+    self.model_runner.alloc_memory_pool(memory_pool_config)
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/model_executor/model_runner.py", line 886, in alloc_memory_pool
+    result = self.kv_cache_configurator.configure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/mem_cache/kv_cache_configurator.py", line 370, in configure
+    config = self._resolve_memory_pool_config(pre_model_load_memory)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/mem_cache/kv_cache_configurator.py", line 2355, in _resolve_memory_pool_config
+    available_bytes = self._profile_available_bytes(pre_model_load_memory)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/mem_cache/kv_cache_configurator.py", line 2220, in _profile_available_bytes
+    raise ValueError(
+ValueError: Loaded weights leave no GPU memory for the KV cache under --mem-fraction-static=0.97. Raise --mem-fraction-static above 0.999 (minimum viable = 1 - available/pre = 0.9987). If using speculative decoding, draft weights are now counted.
+
+[2026-10-01 23:19:43] Received sigquit from a child process. It usually means the child failed.
+[2026-10-01 23:19:43] kill_process_tree called: parent_pid=3992674, include_parent=True, pid=3992674

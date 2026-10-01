@@ -1,0 +1,54 @@
+############################################
+# measuring arm TAG=M16
+############################################
+-- server pid: 1054555
+SGLANG_PP_EARLY_PROXY_SEND=0
+
+== [1/4] greedy capture x2 (within-instance determinism) ==
+  captured M161
+  captured M162
+[0] IDENTICAL (94 chars)
+[1] IDENTICAL (183 chars)
+[2] IDENTICAL (198 chars)
+[3] IDENTICAL (152 chars)
+[4] IDENTICAL (141 chars)
+[5] IDENTICAL (217 chars)
+
+PARITY OK: all 6 prompts byte-identical
+  within-instance determinism: OK
+
+== [2/4] decode probe (1,2,4,8,16 x 3 rounds, interleaved) ==
+  round 2 bs=4   12.80s   677 tok     52.9 tok/s agg     75.6 ms/tok/req
+  round 2 bs=8   16.26s  1626 tok    100.0 tok/s agg     80.0 ms/tok/req
+  round 2 bs=16  35.67s  4096 tok    114.8 tok/s agg    139.3 ms/tok/req
+
+  bs    median       min       max   spread
+   1      26.7      26.5      26.8     1.1%
+   2      42.7      41.6      43.0     3.1%
+   4      73.4      52.9      73.5    28.0%
+   8     100.4     100.0     103.8     3.7%
+  16     111.7     107.5     114.8     6.6%
+
+decode-graph usage during measurement: 100.0% of 1156 Decode batch lines
+
+wrote res/dec_M16.json
+
+== [3/4] prefill concurrency probe (lens 1000,4000 x K 1,2,4,8) ==
+=== aggregate prefill throughput (tok/s), median of rounds ===
+  prompt         K=1         K=2         K=4         K=8
+    1000       749.6       984.7      1155.5      1273.7
+    4000      1153.8      1267.1      1340.6      1380.0
+
+=== speedup over K=1 (does concurrency still pay?) ===
+    1000       1.00x       1.31x       1.54x       1.70x
+
+== [4/4] graph coverage during this arm ==
+   3936 cuda graph: False
+   2024 cuda graph: True
+   3880 #running-req: 0
+    880 #running-req: 1
+    976 #running-req: 2
+      8 #running-req: 3
+    216 #running-req: 4
+
+MEASURE_DONE tag=M16
