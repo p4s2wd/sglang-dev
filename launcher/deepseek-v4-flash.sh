@@ -66,7 +66,17 @@ CTX="${CTX:-262144}"
 # through the triton decode kernel, and _merge_partial_attn materializes
 # [tokens, 128 heads, 512] fp32 temporaries -- at 2048 tokens that is >1 GiB
 # per layer and OOMs a PP3 card during warmup (measured 2026-09-25).
-CHUNK="${CHUNK:-512}"
+#
+# Lowered 512 -> 256 on 2026-10-02, and not for throughput: measured roughly
+# neutral (short prompts +16%, long prompts -10%, mean ~0.98x). It is here
+# because a 256-token chunk halves the two prefill transients that decide
+# whether a 256K prompt can be prefilled at all on PP0, which has under
+# 0.5 GB free: the indexer's [Q, max_seqlen_k] fp32 logits (133 -> 66 MiB at
+# 258K context) and the per-tile score buffer in fp16_mqa_logits_triton
+# (_CHUNK 1024 -> 256, so 64 -> 16 MiB). Together ~115 MiB against a ~57 MiB
+# shortfall. Verified: a 258,941-token prefill completes, greedy output is
+# byte-identical, and 200 GSM8K questions at parallel 8 run with zero crashes.
+CHUNK="${CHUNK:-256}"
 
 # Throughput. --max-running-requests also sets pp_max_micro_batch_size
 # (= MAXREQ / PP), i.e. how full the pipeline can get.
@@ -160,6 +170,13 @@ export SGLANG_OPT_USE_SM75_C4_TOPK="${SGLANG_OPT_USE_SM75_C4_TOPK:-1}"
 export SGLANG_PP_EARLY_PROXY_SEND="${SGLANG_PP_EARLY_PROXY_SEND:-0}"
 export SGLANG_OPT_W8A16_WIDE_M1_K1024="${SGLANG_OPT_W8A16_WIDE_M1_K1024:-0}"
 export SGLANG_DSV4_DECODE_SEQ_LEN_BUCKETS="${SGLANG_DSV4_DECODE_SEQ_LEN_BUCKETS:-4096,8192,16384,32768,65536,131072}"
+
+# Must be exported, not just assigned above: sglang reads it with os.getenv
+# inside get_pp_indices, not as a server arg, so an unexported shell variable
+# never reaches the server process. Without this export the F3 default is
+# silently ignored and the box comes up on sglang's own 10,11,11,11 split,
+# which measures 7.6% slower on prefill.
+export SGLANG_PP_LAYER_PARTITION
 
 # Prefill indexer logits: the default gate (8192 query tokens) disables the
 # fused Triton fp16 MQA-logits path for every chunked prefill on this box
