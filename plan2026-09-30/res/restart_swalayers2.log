@@ -1,0 +1,92 @@
+== stopping ==
+   AB_FORCE=1: restarting over the live server on :8200
+signalled; waiting for GPU memory to be released
+all GPU processes gone
+== starting ==
+   GRAPH_BS='<default>'  GRAPH_MAX_BS='<default>'  PREFILL_GRAPH='disabled'
+== pre-flight ==
+== environment ==
+python                             /data/nvme/sglang/.venv/bin/python3 (Python 3.12.2)
+sglang version                     0.5.21.dev797+ge0f76063c
+sub-90 wiring import               ok
+JIT kernel sources                 /data/nvme/sglang-codex/sglang/python/sglang/kernels/jit
+2.13.0+cu130 cuda=13.0 gpus=8
+torch                              2.13.0+cu130 cuda=13.0 gpus=8
+GPUs visible                       8
+compute capability                 7.5 (SM75, supported)
+nvcc                               Build cuda_12.9.r12.9/compiler.36037853_0
+ninja                              /data/nvme/sglang/.venv/bin/ninja
+checkpoint                         /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+GPU memory free                    max used 1 MiB
+power limit                        150.00 W (150 W is the validated setting; higher risks GPU6/7 hangs)
+
+check: PASS
+
+== starting ==
+model   : /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+parallel: TP2 x PP4, ctx 262144, kv pool 270000, kv dtype fp8_e4m3
+http    : http://0.0.0.0:8200
+log     : /data/nvme/sglang/logs/serve-prod.log
+ready   : grep 'fired up and ready to roll' /data/nvme/sglang/logs/serve-prod.log
+pid     : 177305
+SERVER DIED
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_pslinux.py", line 1593, in wrapper
+    return fun(self, *args, **kwargs)
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_common.py", line 375, in wrapper
+    return fun(self)
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_pslinux.py", line 1683, in _parse_stat_file
+    data = bcat(f"{self._procfs_path}/{self.pid}/stat")
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_common.py", line 730, in bcat
+    return cat(fname, fallback=fallback, _open=open_binary)
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_common.py", line 719, in cat
+    return f.read()
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/entrypoints/engine.py", line 1872, in launch_phase_sigquit_handler
+    logger.error(
+  File "/home/shuang/miniconda3/lib/python3.12/logging/__init__.py", line 1568, in error
+    self._log(ERROR, msg, args, **kwargs)
+  File "/home/shuang/miniconda3/lib/python3.12/logging/__init__.py", line 1682, in _log
+    record = self.makeRecord(self.name, level, fn, lno, msg, args,
+  File "/home/shuang/miniconda3/lib/python3.12/logging/__init__.py", line 1645, in makeRecord
+    def makeRecord(self, name, level, fn, lno, msg, args, exc_info,
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/entrypoints/engine.py", line 1875, in launch_phase_sigquit_handler
+    kill_process_tree(os.getpid())
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/utils/common.py", line 2368, in kill_process_tree
+    itself = psutil.Process(parent_pid)
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/__init__.py", line 314, in __init__
+    self._init(pid)
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/__init__.py", line 347, in _init
+    self._ident = self._get_ident()
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/__init__.py", line 394, in _get_ident
+    return (self.pid, self._proc.create_time(monotonic=True))
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_pslinux.py", line 1593, in wrapper
+    return fun(self, *args, **kwargs)
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_pslinux.py", line 1857, in create_time
+    float(self._parse_stat_file()['create_time']) / CLOCK_TICKS
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_pslinux.py", line 1593, in wrapper
+    return fun(self, *args, **kwargs)
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_common.py", line 375, in wrapper
+    return fun(self)
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_pslinux.py", line 1683, in _parse_stat_file
+    data = bcat(f"{self._procfs_path}/{self.pid}/stat")
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_common.py", line 730, in bcat
+    return cat(fname, fallback=fallback, _open=open_binary)
+  File "/data/nvme/sglang/.venv/lib/python3.12/site-packages/psutil/_common.py", line 718, in cat
+    with _open(fname) as f:
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/entrypoints/engine.py", line 1875, in launch_phase_sigquit_handler
+    kill_process_tree(os.getpid())
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/utils/common.py", line 2358, in kill_process_tree
+    logger.info(
+  File "/home/shuang/miniconda3/lib/python3.12/logging/__init__.py", line 1539, in info
+    self._log(INFO, msg, args, **kwargs)
+  File "/home/shuang/miniconda3/lib/python3.12/logging/__init__.py", line 1684, in _log
+    self.handle(record)
+  File "/home/shuang/miniconda3/lib/python3.12/logging/__init__.py", line 1700, in handle
+    self.callHandlers(record)
+  File "/home/shuang/miniconda3/lib/python3.12/logging/__init__.py", line 1746, in callHandlers
+    def callHandlers(self, record):
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/entrypoints/engine.py", line 1875, in launch_phase_sigquit_handler
+    kill_process_tree(os.getpid())
+  File "/data/nvme/sglang-codex/sglang/python/sglang/srt/utils/common.py", line 2358, in kill_process_tree
+    logger.info(
+Message: 'kill_process_tree called: parent_pid=177305, include_parent=True, pid=177305'
+Arguments: ()

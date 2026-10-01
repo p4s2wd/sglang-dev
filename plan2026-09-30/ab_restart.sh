@@ -19,6 +19,27 @@ LOG=/data/nvme/sglang/logs/serve-prod.log
 PORT=8200
 
 echo "== stopping =="
+
+# Refuse to restart on top of a live server unless the caller insists.
+#
+# This guard exists because that mistake was made four times in one session:
+# starting a restart while a benchmark or another restart was still running.
+# ab_restart.sh kills whatever is on :8200, so the "other" job is not slowed
+# down, it is killed -- and its result is then a fabricated crash that looks
+# exactly like a real one. A written rule did not survive contact with a
+# long-running background job, so the rule is enforced here instead.
+#
+# AB_FORCE=1 ./ab_restart.sh   -- restart anyway (only when you know why).
+if curl -sf -m 5 "http://127.0.0.1:$PORT/health" >/dev/null 2>&1; then
+  if [ "${AB_FORCE:-0}" != "1" ]; then
+    echo "ABORT: a healthy server is already answering on :$PORT." >&2
+    echo "       Another arm is probably still measuring. Stop it first, or" >&2
+    echo "       re-run with AB_FORCE=1 if you really mean to restart now." >&2
+    exit 2
+  fi
+  echo "   AB_FORCE=1: restarting over the live server on :$PORT" >&2
+fi
+
 timeout 300 "$LAUNCH" --stop || true
 
 if pgrep -f "sglang serve" >/dev/null; then

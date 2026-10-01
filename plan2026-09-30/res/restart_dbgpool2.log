@@ -1,0 +1,32 @@
+== stopping ==
+signalled; waiting for GPU memory to be released
+all GPU processes gone
+== starting ==
+   GRAPH_BS='<default>'  GRAPH_MAX_BS='<default>'  PREFILL_GRAPH='disabled'
+== pre-flight ==
+== environment ==
+python                             /data/nvme/sglang/.venv/bin/python3 (Python 3.12.2)
+sglang version                     0.5.21.dev797+ge0f76063c
+sub-90 wiring import               ok
+JIT kernel sources                 /data/nvme/sglang-codex/sglang/python/sglang/kernels/jit
+2.13.0+cu130 cuda=13.0 gpus=8
+torch                              2.13.0+cu130 cuda=13.0 gpus=8
+GPUs visible                       8
+compute capability                 7.5 (SM75, supported)
+nvcc                               Build cuda_12.9.r12.9/compiler.36037853_0
+ninja                              /data/nvme/sglang/.venv/bin/ninja
+checkpoint                         /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+GPU memory free                    max used 1 MiB
+power limit                        150.00 W (150 W is the validated setting; higher risks GPU6/7 hangs)
+
+check: PASS
+
+== starting ==
+model   : /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+parallel: TP2 x PP4, ctx 262144, kv pool 270000, kv dtype fp8_e4m3
+http    : http://0.0.0.0:8200
+log     : /data/nvme/sglang/logs/serve-prod.log
+ready   : grep 'fired up and ready to roll' /data/nvme/sglang/logs/serve-prod.log
+pid     : 148229
+== healthy after 80s ==
+./ab_restart.sh: line 69: PREFILL_GRAPH_MAX_BS: unbound variable

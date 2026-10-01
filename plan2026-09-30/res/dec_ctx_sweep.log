@@ -1,0 +1,11 @@
+ want_tok   got_tok    ms/token      tok/s    spread note
+     2000      2891       36.57      27.35      3.8%  uncached prefill 2.2s
+     8000     11559       37.70      26.53      4.4%  uncached prefill 7.1s
+    32000     46143       41.56      24.06      3.8%  uncached prefill 30.7s
+    64000     92128       46.11      21.69      1.7%  uncached prefill 70.9s
+   128000  FAIL HTTP Error 400: Bad Request
+[{"want": 2000, "got": 2891, "ms_per_token": 36.565786600112915, "tok_s": 27.347969043742985, "spread_pct": 3.800743342688282, "samples": [36.565786600112915, 35.6967031955719, 37.086474895477295]}, {"want": 8000, "got": 11559, "ms_per_token": 37.698936462402344, "tok_s": 26.525947250456614, "spread_pct": 4.414346499638251, "samples": [38.920944929122925, 37.25678324699402, 37.698936462402344]}, {"want": 32000, "got": 46143, "ms_per_token": 41.560351848602295, "tok_s": 24.061393985374327, "spread_pct": 3.798817382724265, "samples": [41.560351848602295, 42.82158613204956, 41.24278426170349]}, {"want": 64000, "got": 92128, "ms_per_token": 46.10506892204285, "tok_s": 21.68958909248913, "spread_pct": 1.6500785311513795, "samples": [46.10506892204285, 45.65997123718262, 46.42074108123779]}, {"want": 128000, "error": "HTTP Error 400: Bad Request"}]
+ want_tok   got_tok    ms/token      tok/s    spread note
+    83000    119467       49.16      20.34      1.0%  uncached prefill 100.5s
+   100000    143511        3.50     285.39     20.3%  uncached prefill 133.8s
+   109000    156429       60.67      16.48      0.3%  uncached prefill 152.7s

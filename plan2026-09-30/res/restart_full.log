@@ -1,0 +1,97 @@
+== stopping ==
+signalled; waiting for GPU memory to be released
+all GPU processes gone
+== starting ==
+   GRAPH_BS='<default>'  GRAPH_MAX_BS='<default>'  PREFILL_GRAPH='disabled'
+== pre-flight ==
+== environment ==
+python                             /data/nvme/sglang/.venv/bin/python3 (Python 3.12.2)
+sglang version                     0.5.21.dev797+ge0f76063c
+sub-90 wiring import               ok
+JIT kernel sources                 /data/nvme/sglang-codex/sglang/python/sglang/kernels/jit
+2.13.0+cu130 cuda=13.0 gpus=8
+torch                              2.13.0+cu130 cuda=13.0 gpus=8
+GPUs visible                       8
+compute capability                 7.5 (SM75, supported)
+nvcc                               Build cuda_12.9.r12.9/compiler.36037853_0
+ninja                              /data/nvme/sglang/.venv/bin/ninja
+checkpoint                         /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+GPU memory free                    max used 1 MiB
+power limit                        150.00 W (150 W is the validated setting; higher risks GPU6/7 hangs)
+
+check: PASS
+
+== starting ==
+model   : /data/nvme/models/DeepSeek/DeepSeek-V4-Flash-Vision-Exp
+parallel: TP2 x PP4, ctx 262144, kv pool 270000, kv dtype fp8_e4m3
+http    : http://0.0.0.0:8200
+log     : /data/nvme/sglang/logs/serve-prod.log
+ready   : grep 'fired up and ready to roll' /data/nvme/sglang/logs/serve-prod.log
+pid     : 223762
+== healthy after 80s ==
+
+== memory accounting for this arm ==
+TP0] Capture target decode CUDA graph begin. backend=full, num_tokens_per_req=1, bs=[1, 2], avail mem=0.43 GB
+TP0] Capture target decode CUDA graph begin. backend=full, num_tokens_per_req=1, bs=[1, 2], avail mem=1.34 GB
+TP0] Capture target decode CUDA graph begin. backend=full, num_tokens_per_req=1, bs=[1, 2], avail mem=1.39 GB
+TP0] Capture target decode CUDA graph begin. backend=full, num_tokens_per_req=1, bs=[1, 2], avail mem=2.64 GB
+TP0] Capture target decode CUDA graph end. elapsed=7.73 s, mem usage=0.13 GB, avail mem=2.51 GB.
+TP0] Capture target decode CUDA graph end. elapsed=7.94 s, mem usage=0.13 GB, avail mem=0.30 GB.
+TP0] Capture target decode CUDA graph end. elapsed=8.28 s, mem usage=0.13 GB, avail mem=1.21 GB.
+TP0] Capture target decode CUDA graph end. elapsed=8.47 s, mem usage=0.13 GB, avail mem=1.26 GB.
+TP0] DSV4 memory calculation: unified=False, unified_fp8=False, dspark_draft_bf16=False, bytes_per_full_token=1109.25, available_bytes=0.32 GB, c128_state_fixed=0.03 GB, c2_state_fixed=0.00 GB, swa_fixed=0.00 GB, swa_ring_fixed=0.00 GB, c4_state_fixed=0.00 GB, full_token=284672
+TP0] DSV4 memory calculation: unified=False, unified_fp8=False, dspark_draft_bf16=False, bytes_per_full_token=1200.25, available_bytes=0.32 GB, c128_state_fixed=0.02 GB, c2_state_fixed=0.00 GB, swa_fixed=0.00 GB, swa_ring_fixed=0.00 GB, c4_state_fixed=0.00 GB, full_token=267776
+TP0] DSV4 memory calculation: unified=False, unified_fp8=False, dspark_draft_bf16=False, bytes_per_full_token=930.00, available_bytes=0.32 GB, c128_state_fixed=0.03 GB, c2_state_fixed=0.00 GB, swa_fixed=0.00 GB, swa_ring_fixed=0.00 GB, c4_state_fixed=0.00 GB, full_token=339456
+TP0] DSV4 memory calculation: unified=False, unified_fp8=False, dspark_draft_bf16=False, bytes_per_full_token=936.75, available_bytes=0.32 GB, c128_state_fixed=0.03 GB, c2_state_fixed=0.00 GB, swa_fixed=0.00 GB, swa_ring_fixed=0.00 GB, c4_state_fixed=0.00 GB, full_token=330752
+TP0] DSV4 pool sizes: full=267776, swa=26624, c4=66944, c128=2092, c4_state=832, c128_state=0
+TP0] DSV4 pool sizes: full=284672, swa=28416, c4=71168, c128=2224, c4_state=888, c128_state=0
+TP0] DSV4 pool sizes: full=330752, swa=33024, c4=82688, c128=2584, c4_state=1032, c128_state=0
+TP0] DSV4 pool sizes: full=339456, swa=33792, c4=84864, c128=2652, c4_state=1056, c128_state=0
+TP0] Load weight begin. avail mem=21.09 GB
+TP0] Load weight end. elapsed=33.53 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=1.93 GB, mem usage=19.17 GB.
+TP0] Load weight end. elapsed=33.87 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=1.94 GB, mem usage=19.15 GB.
+TP0] Load weight end. elapsed=34.56 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=0.95 GB, mem usage=20.14 GB.
+TP0] Load weight end. elapsed=34.61 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=2.65 GB, mem usage=18.45 GB.
+TP0] max_total_num_tokens=267776, chunked_prefill_size=256, max_prefill_tokens=16384, max_running_requests=8, context_len=262144, available_gpu_mem=0.30 GB
+TP0] max_total_num_tokens=267776, chunked_prefill_size=256, max_prefill_tokens=16384, max_running_requests=8, context_len=262144, available_gpu_mem=1.21 GB
+TP0] max_total_num_tokens=267776, chunked_prefill_size=256, max_prefill_tokens=16384, max_running_requests=8, context_len=262144, available_gpu_mem=1.26 GB
+TP0] max_total_num_tokens=267776, chunked_prefill_size=256, max_prefill_tokens=16384, max_running_requests=8, context_len=262144, available_gpu_mem=2.51 GB
+TP0] Memory pool end. avail mem=0.46 GB
+TP0] Memory pool end. avail mem=1.37 GB
+TP0] Memory pool end. avail mem=1.42 GB
+TP0] Memory pool end. avail mem=2.65 GB
+TP1] Capture target decode CUDA graph begin. backend=full, num_tokens_per_req=1, bs=[1, 2], avail mem=0.43 GB
+TP1] Capture target decode CUDA graph begin. backend=full, num_tokens_per_req=1, bs=[1, 2], avail mem=1.34 GB
+TP1] Capture target decode CUDA graph begin. backend=full, num_tokens_per_req=1, bs=[1, 2], avail mem=1.39 GB
+TP1] Capture target decode CUDA graph begin. backend=full, num_tokens_per_req=1, bs=[1, 2], avail mem=2.64 GB
+TP1] Capture target decode CUDA graph end. elapsed=7.74 s, mem usage=0.13 GB, avail mem=2.51 GB.
+TP1] Capture target decode CUDA graph end. elapsed=7.94 s, mem usage=0.13 GB, avail mem=0.30 GB.
+TP1] Capture target decode CUDA graph end. elapsed=8.26 s, mem usage=0.13 GB, avail mem=1.21 GB.
+TP1] Capture target decode CUDA graph end. elapsed=8.49 s, mem usage=0.13 GB, avail mem=1.26 GB.
+TP1] DSV4 memory calculation: unified=False, unified_fp8=False, dspark_draft_bf16=False, bytes_per_full_token=1109.25, available_bytes=0.32 GB, c128_state_fixed=0.03 GB, c2_state_fixed=0.00 GB, swa_fixed=0.00 GB, swa_ring_fixed=0.00 GB, c4_state_fixed=0.00 GB, full_token=284672
+TP1] DSV4 memory calculation: unified=False, unified_fp8=False, dspark_draft_bf16=False, bytes_per_full_token=1200.25, available_bytes=0.32 GB, c128_state_fixed=0.02 GB, c2_state_fixed=0.00 GB, swa_fixed=0.00 GB, swa_ring_fixed=0.00 GB, c4_state_fixed=0.00 GB, full_token=267776
+TP1] DSV4 memory calculation: unified=False, unified_fp8=False, dspark_draft_bf16=False, bytes_per_full_token=930.00, available_bytes=0.32 GB, c128_state_fixed=0.03 GB, c2_state_fixed=0.00 GB, swa_fixed=0.00 GB, swa_ring_fixed=0.00 GB, c4_state_fixed=0.00 GB, full_token=339456
+TP1] DSV4 memory calculation: unified=False, unified_fp8=False, dspark_draft_bf16=False, bytes_per_full_token=936.75, available_bytes=0.32 GB, c128_state_fixed=0.03 GB, c2_state_fixed=0.00 GB, swa_fixed=0.00 GB, swa_ring_fixed=0.00 GB, c4_state_fixed=0.00 GB, full_token=330752
+TP1] DSV4 pool sizes: full=267776, swa=26624, c4=66944, c128=2092, c4_state=832, c128_state=0
+TP1] DSV4 pool sizes: full=284672, swa=28416, c4=71168, c128=2224, c4_state=888, c128_state=0
+TP1] DSV4 pool sizes: full=330752, swa=33024, c4=82688, c128=2584, c4_state=1032, c128_state=0
+TP1] DSV4 pool sizes: full=339456, swa=33792, c4=84864, c128=2652, c4_state=1056, c128_state=0
+TP1] Load weight begin. avail mem=21.09 GB
+TP1] Load weight end. elapsed=33.55 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=1.93 GB, mem usage=19.17 GB.
+TP1] Load weight end. elapsed=34.05 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=1.94 GB, mem usage=19.15 GB.
+TP1] Load weight end. elapsed=35.06 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=0.95 GB, mem usage=20.14 GB.
+TP1] Load weight end. elapsed=35.29 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=2.65 GB, mem usage=18.45 GB.
+TP1] Memory pool end. avail mem=0.46 GB
+TP1] Memory pool end. avail mem=1.37 GB
+TP1] Memory pool end. avail mem=1.42 GB
+TP1] Memory pool end. avail mem=2.65 GB
+
+== flags the server actually carries ==
+SGLANG_DSV4_DECODE_SEQ_LEN_BUCKETS=4096,8192,16384,32768,65536,131072
+SGLANG_OPT_W8A16_WIDE_M1_K1024=0
+SGLANG_PP_EARLY_PROXY_SEND=0
+SGLANG_PP_LAYER_PARTITION=11,11,11,10
+SGLANG_TRITON_LOAD_WARNING_THRESHOLD_GB=999
+
+== OOM / failure check ==
+ok

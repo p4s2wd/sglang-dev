@@ -1,0 +1,4 @@
+== stopping ==
+ABORT: a healthy server is already answering on :8200.
+       Another arm is probably still measuring. Stop it first, or
+       re-run with AB_FORCE=1 if you really mean to restart now.
