@@ -186,6 +186,25 @@ export SGLANG_PP_LAYER_PARTITION
 export SGLANG_OPT_DSV4_NONPAGED_INDEXER="${SGLANG_OPT_DSV4_NONPAGED_INDEXER:-1}"
 export SGLANG_OPT_DSV4_NONPAGED_INDEXER_MIN_QUERY_TOKENS="${SGLANG_OPT_DSV4_NONPAGED_INDEXER_MIN_QUERY_TOKENS:-64}"
 
+# PyTorch's caching allocator, on PP0's prefill path.
+#
+# A 257K prefill died with "Tried to allocate 44.00 MiB ... 35.25 MiB is free"
+# while the same message reported 119.90 MiB reserved-but-unallocated. The
+# memory was there; it was fragmented into pieces smaller than the request.
+# expandable_segments lets a reserved segment grow instead of demanding a fresh
+# contiguous block, which is exactly the case that fails here.
+#
+# Why it shows up on PP0 and only near 256K: PP0 carries the indexer and the
+# MoE align buffers, and the prefill scratch is sized
+# num_tokens*topk + (E+1)*(block_m-1) rows -- 3855 of those rows are pure
+# padding at any chunk size, so the transient peak barely moves when the chunk
+# shrinks. What varies is how much is left over, and near a full pool the
+# leftover is whatever the allocator happened to cache.
+#
+# The MoE padding term is the structural half of this and is not addressed
+# here; see NOTES-2026-10-02-longctx.md.
+export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
+
 LOG_DIR="${LOG_DIR:-$PWD/logs}"
 LOG_NAME="${LOG_NAME:-serve-prod}"
 

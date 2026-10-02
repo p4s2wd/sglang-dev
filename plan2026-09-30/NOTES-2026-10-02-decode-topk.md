@@ -268,3 +268,102 @@ chunk 256 的 prefill 基线(未命中 radix,单 token 补全):
 32,001 | 21.1 s | 1518.3 |
 128,003 | 127.4 s | 1004.9 |
 255,999 | 421.4 s | **607.5** |
+
+---
+
+# 八、PP0 OOM:不是容量不够,是碎片(17:00–18:30)
+
+第七节末尾我说"256K 满足了",**这句话是错的,这里更正。**
+
+## 八.1 崩了
+
+17:07 PP0 崩在一个 257K prefill 的中途:
+
+```
+torch.OutOfMemoryError: Tried to allocate 44.00 MiB.
+GPU 0 has a total capacity of 21.49 GiB of which 35.25 MiB is free.
+Of the allocated memory 20.78 GiB is allocated by PyTorch,
+and 119.90 MiB is reserved by PyTorch but unallocated.
+If reserved but unallocated memory is large try setting
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.
+```
+
+**35 MiB 空闲 + 120 MiB 被缓存但碎成小块,凑不出连续的 44 MiB。**
+日志归档 `res/crash_257k_prefill.log`。
+
+## 八.2 那 44 MiB 是什么
+
+栈是 `_execute_extend` → MoE fp8 路径 → `fp8.py:3271`:
+
+```python
+down_slots = torch.empty((num_slots, hidden), dtype=torch.float16, ...)
+```
+
+而 `num_slots` 是 align 缓冲的**容量**:
+
+```
+num_slots = num_tokens * topk + (E+1) * (block_m - 1)
+          = num_tokens * 6   + 257 * 15
+```
+
+chunk=256 时 = 1,536 + 3,855 = 5,391 行 × 4096 × 2 B = **44.2 MB**,与报错完全吻合。
+
+**关键在那 3,855 行:它是纯 padding,和 token 数无关。** 所以调小 chunk 几乎没用:
+
+| chunk | num_slots | inter_slots |
+|---|---|---|
+256 | 5,391 | 44.2 MB |
+128 | 4,623 | 37.9 MB |
+16 | 3,951 | 32.4 MB |
+
+每层地板约 **63 MB**(inter_slots + down_slots 两个缓冲),**无论 chunk 多小都下不去**。
+作者自己的注释也承认:"at decode is 3861 rows against 6 live ones"。
+
+## 八.3 修法:先治碎片,没动 block_m
+
+`PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`(launcher 里可覆盖)。
+理由:报错明说碎片,而 `num_slots` 那个 padding 项要靠改 `block_m`(16→8 能省约 34 MB/层),
+但那会动 GEMM 的 tiling,是另一件事、另一份风险。**先做便宜的、能被验证的那一半。**
+
+结果(冷 prefill,prompt 里每 20 词插随机 nonce 破坏 radix 前缀,否则第二次会被缓存吃掉——我第一次
+就是这么骗自己的:三次都报 4300–5100 tok/s,那是缓存命中):
+
+| prompt token | 墙钟 | prefill tok/s |
+|---|---|---|
+256,933 | 482.2 s | 532.8 |
+257,501 | 464.9 s | 554.0 |
+259,452 | 451.9 s | 574.2 |
+
+**3/3 通过,崩溃计数 0。改之前同样这一档崩过一次。**
+
+## 八.4 意外:decode 也变快了
+
+碎片少了,分配器就不用每步去 cudaMalloc —— 这和 `alloc_for_decode` 占 19% CPU 时间对得上:
+
+| | 之前 | 之后 |
+|---|---|---|
+bs=1 @ 8K | 21.92 | **24.62** (+12%) |
+bs=2 | 33.47 | 42.19 (+26%) |
+bs=4 | 54.19 | 70.85 (+31%) |
+bs=8 | 111.33 | 113.11 (+2%) |
+131,328 上下文 | 21.19 / 21.29 | 21.78 |
+
+## 八.5 代价:池变小,parity 不再逐字节一致
+
+- **池 267,776 → 264,192**(expandable_segments 预留更大的虚拟段)。仍 > 262,144,
+  但余量从 5,632 缩到 2,048 token。
+- **parity 从 6/6 变成 5/6**:prompt[2] 在第 129 字符分叉,两个版本都通顺、答的是同一问题,
+  只是措辞不同。**同配置两次抓取逐字节一致**,说明确定性没坏;变的是分配器给的地址 →
+  kernel 选路不同 → logit 微小差异 → greedy 换一个词。GSM8K 严格口径反而从 0.890 升到
+  **0.910**(宽松 0.980),闸门通过。
+
+**所以这是良性的数值噪声,但它确实改变了可观测行为,不能说"和之前一模一样"。**
+
+## 八.6 还没解决的
+
+`num_slots` 的 padding 项(每层 63 MB 地板)是结构性的。要动就得改 `block_m`(16→8,
+padding 从 3,855 行降到 1,799 行,每层省约 34 MB),那会改 GEMM tiling,必须单独验证。
+**没有做。**
+
+可靠性样本只有 3 次冷 prefill,而崩溃只发生过 1 次 —— **3 过 1 崩不足以称为"可靠"**,
+只能说"不再立刻崩"。
