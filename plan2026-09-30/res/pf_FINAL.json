@@ -1,0 +1,31 @@
+{
+ "config": {
+  "chunked_prefill_size": 256,
+  "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+  "SGLANG_PP_LAYER_PARTITION": "11,11,11,10"
+ },
+ "points": [
+  {
+   "prompt_tokens": 3987,
+   "seconds": 2.8,
+   "tok_s": 1402.1
+  },
+  {
+   "prompt_tokens": 32001,
+   "seconds": 20.2,
+   "tok_s": 1585.1
+  },
+  {
+   "prompt_tokens": 128003,
+   "seconds": 121.0,
+   "tok_s": 1057.8
+  },
+  {
+   "prompt_tokens": 255999,
+   "seconds": 408.3,
+   "tok_s": 627.0
+  }
+ ],
+ "provenance": "Values as printed by pf_logprobe.py on the current config. The tool's own --out target was never written because the run raised on the 196,608 point (filler sizing overshot the 262,144 context limit and the exception happened before the write). These are that run's stdout, keyed here; the 196,608 point was dropped rather than re-measured, and 255,999 already covers the top of the range.",
+ "compare_before_expandable_segments": "pf_chunk256_probe.json"
+}
