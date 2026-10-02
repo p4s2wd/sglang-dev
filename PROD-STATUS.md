@@ -27,14 +27,16 @@
 
 | 仓库 | 分支 / commit | 内容 |
 |---|---|---|
-| `p4s2wd/sglang-sm75` | `sm75-dsv4-flash-main` @ `253d3fae31` | 框架改动:并行 top-K、IMA 修复、开关与诊断 |
-| `p4s2wd/sglang-dev` | `main` @ `ee54abd` | 本文件、基准脚本、NOTES、`launcher/` 受控副本 |
+| `p4s2wd/sglang-sm75` | `sm75-dsv4-flash-main` @ `e8e7421c4f` | 框架改动:并行 top-K、IMA 修复、两个诊断开关 |
+| `p4s2wd/sglang-dev` | `main` @ 见 git log | 本文件、基准脚本、NOTES、`launcher/` 受控副本 |
 
-**sglang 侧今天两个 commit:**
+**sglang 侧今天三个 commit:**
 
 - `551da196b1` — decode 的稀疏 top-K 并行化(bs=1,256K 上下文 **+41.8%**)
-- `253d3fae31` — `SGLANG_OPT_SM75_PARALLEL_TOPK=0`  kill switch +
-  `SGLANG_OPT_SM75_TOPK_DIAG=1`  一次性 trace
+- `253d3fae31` — `SGLANG_OPT_SM75_PARALLEL_TOPK=0` kill switch +
+  `SGLANG_OPT_SM75_TOPK_DIAG=1` 一次性 trace
+- `e8e7421c4f` — `SGLANG_OPT_PP_HANDOFF_DIAG=1`,把一次 PP 握手按阶段拆开计时。
+  结论是这条路径只占 step 的 0.1%,**排除了它作为瓶颈**
 
 **launcher 侧一个改动:** `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`。
 
@@ -94,24 +96,71 @@
 每卡 | 1.60 GB |
 负载下实测显存频率 | 6800 MHz(≈满速),SM 1485–1575 MHz(86–91% boost) |
 **bs=1 理论上限** | **~370 tok/s** |
-**现在(bs=1, 短上下文)** | ~25–27 tok/s = **上限的 7%** |
+**现在(bs=1, 短上下文)** | ~27 tok/s = **上限的 7%** |
 **现在(bs=1, 256K)** | ~21 tok/s = **上限的 5.6%** |
 
-**离天花板还有约 14 倍。** 差距全在主机侧 —— 30 秒 py-spy profile(bs=1, 8K):
+**离天花板还有约 14 倍。** 那 14 倍在哪(2026-10-02 晚的调查结论,见 NOTES 第十一节):
 
-| 主机侧在做什么 | 占比 |
+每 token 的 GPU 工作量(4 级合计,CUPTI 实测 **623.1 ms / 24 token = 26.0 ms**):
+
+| 家族 | ms/token | 占比 | 次数/token |
+|---|---|---|---|
+**nccl** | **10.22** | **39.4%** | 52 |
+other | 8.03 | 30.9% | 448 |
+gemm | 5.30 | 20.4% | 268 |
+elementwise | 0.96 | 3.7% | 328 |
+topk | 0.66 | 2.5% | 12 |
+attn | 0.43 | 1.7% | 146 |
+moe | 0.34 | 1.3% | 64 |
+
+**GPU 忙 70%**(26.0 ms / 37.3 ms 步),不是早先记的 4.8% —— 那个数错在拿
+kernel 总时长除以 profiler 撑长的 trace 跨度,分母应该是真实 step 时间。
+
+同时主机侧也在烧 CPU(`/proc/<pid>/stat` 实测,不用 profiler):**每一级每 token
+15–20.5 ms,最忙一级占墙钟 55%**。
+
+所以 bs=1 的 decode 由三件事共同绑定,**都不是调参能解决的**:
+
+1. **GPU 26.0 ms/token,但 kernel 时长中位数 4 us** —— 延迟受限,不是带宽受限。
+   CUDA graph 里 NCCL 是图上的节点,与其他 kernel 串行,**没有 comm/compute 重叠**。
+2. **每级 15–20.5 ms CPU**,其中约一半的 self time 在 PP 通信机制上,而那主要是在
+   **等对端**:bs=1 下流水线必然串行,token n+1 要等 n 走完 4 级。
+3. **拓扑被显存算术锁死**,见下。
+
+### 拓扑为什么换不了
+
+**整台机器 98% 的显存被权重占满**:167.81 GB 权重 / 8 × 20.6 GB = 164.8 GB。
+任何不完美均分权重的拓扑都会 OOM。
+
+| 方案 | 每层每卡 | 结果 |
+|---|---|---|
+**TP2(现状)** | 1.914 GB × 11 层 = 21.05 GB | 勉强(= 卡 21.49 GB) |
+TP1 | 3.828 GB × 6 层 = 22.9 GB | **实测 OOM 崩服** |
+TP1+EP2 | 1.997 GB × 11 层 = 21.97 GB | **比 TP2 还多**(EP 只切专家不切注意力) |
+PP2×TP4 | 每级 21–22 层 = 40+ GB | 装不下;且 TP 变宽让 all-reduce 更贵 |
+
+**结论:60–100 tok/s 在 bs=1 上需要动拓扑,动拓扑需要动显存 —— 这两件事互斥。**
+
+### 已排除的方向(都测过,不是猜的)
+
+| 方向 | 结论 |
 |---|---|
-CUDA graph replay(真正的计算) | 16% |
-**PP 收发**(`recv_tensor_dict` → pickle 走 CPU gloo TCP) | 14–25% |
-**KV 分配**(`alloc_for_decode` 等) | ~19% |
-TP 集合通信(all_gather / broadcast) | ~8% |
-GPU 忙的时间占比 | **4.8%**(kernel 时长中位数 4 us) |
+**PP 的 pickle 阻塞路径** | 稳态 **0.015 ms/跳**,3 跳占 step 的 **0.1%**。不值得改 |
+| TP1(消掉 44 次 all-reduce) | 算术不可能,实测崩服 |
+| PP2×TP4 | 装不下,且方向错 |
+| EP | 每卡显存比 TP2 还多,且 PP4 时每级 2 卡已被 TP2 用满,没有独立 EP 轴 |
 
-**PP4 在 bs=1 下零流水收益**:只有 1 个 token 在飞,4 级时间直接相加,却要付 3 次
-主机端阻塞握手。加 bs 也救不了 —— 同一批的多个 token 一起穿过 4 级,还是串行;
-bs=8 的提升来自权重只读一遍,不是流水。
+### 还剩什么(个位数百分比)
 
-**这是下一步(B)的目标。**
+- **融合 all-reduce 开关**:`enable_fused_moe_sum_all_reduce`、
+  `enable_flashinfer_allreduce_fusion`,现在都是 `False`。每层省 1 次通信,
+  44 → 33 次,乐观估计省 2 ms(**+6%**)。
+- 每级那 ~10 ms 非通信 Python。
+
+### 还没查的一段
+
+**8K → 131K 掉 20%**(26.9 → 21.4),**这段不是 top-K**(top-K 的效果是让 131K 之后
+变平)。这约 5 ms/token 的来源未查。
 
 ---
 
@@ -203,6 +252,8 @@ tail -n +$N0 logs/serve-prod.log | grep -q "fired up and ready"
 |---|---|---|
 | `SGLANG_OPT_SM75_PARALLEL_TOPK` | 1 | 设 0 退回单程序 top-K kernel(A/B 用) |
 | `SGLANG_OPT_SM75_TOPK_DIAG` | 0 | 设 1 打印每个 shape 走哪条路(只打一次) |
+| `SGLANG_OPT_PP_HANDOFF_DIAG` | 0 | 设 1 分解一次 PP 握手的各阶段耗时 |
+| `SGLANG_OPT_PP_HANDOFF_EVERY` | 200 | 上面那个的采样间隔(设 1 会每步都打,别在生产用) |
 | `SGLANG_TRITON_SYNC_EVERY_LAUNCH` | 0 | 每个 Triton launch 后同步,用于把 IMA 报告限制在「晚一个 launch」 |
 
 **注意:`/proc/<pid>/environ` 对 scheduler 进程不可信** —— 它们 `setproctitle` 过,
@@ -221,14 +272,30 @@ tail -n +$N0 logs/serve-prod.log | grep -q "fired up and ready"
 
 ## 7. 明确没做的
 
-- **`block_m` 16→8**:读过代码后判定**不该做**。prefill 时 align 缓冲的浪费只有 24%
-  (容量 5,391 行 vs 需要 ~4,096),96% 的浪费在 decode,而 decode 的缓冲被 CUDA graph
-  缓存复用、只驻留一份,不是峰值问题。省不到 24% 却要改 GEMM tiling,不划算。
-- **PP4 → PP2×TP4**:未测。每卡权重不变(都是总量/8),PP 跳数 3→1,但 bs=1 下每级要扛
-  2 倍层,预计只有 27→31 量级。风险是 PP0 从 11 层变 22 层,260K prefill 峰值可能翻倍。
-- **动 `recv_tensor_dict` 的 pickle 阻塞路径**:这才是大头(占 25%),但侵入式。
-- **ncu/nsys 级 profiling**:torch profiler 会把吞吐压到 1/10 并严重扭曲 NCCL,
-  现有结论都避开了它。
+**测过并排除的(有数据,不是没试):**
+
+- **动 `recv_tensor_dict` 的 pickle 阻塞路径** —— 稳态实测 **0.015 ms/跳**,3 跳占
+  step 的 **0.1%**。我曾按 py-spy 的读数以为它占 25%,那是错的:profile 的时间在
+  `_pp_commit_comm_work`,等的是异步发送在 GPU 上完成,而那吸收的是流水线停顿本身。
+- **PP4 → PP2×TP4** —— 每级 21–22 层 = 40+ GB,装不下;而且方向本来就错,TP 变宽
+  让 all-reduce 更贵而不是更便宜。
+- **PP4 × TP2 → PP8 × TP1** —— 实测启动即 OOM(归档 `res/crash_tp1pp8_oom.log`)。
+  TP 不切时每卡扛整层,43 层分 8 卡至少 6 层/卡 = 22.9 GB > 21.49 GB。
+- **EP** —— 只对专家生效、不对注意力生效,每卡显存**比 TP2 还多**(1.997 vs
+  1.914 GB/层);且 PP4 时每级正好 2 卡、已被 TP2 用满,没有独立的 EP 轴。
+
+**判断后不该做的:**
+
+- **`block_m` 16→8** —— prefill 时 align 缓冲的浪费只有 24%(容量 5,391 行 vs 需要
+  ~4,096),96% 的浪费在 decode,而 decode 的缓冲被 CUDA graph 缓存复用、只驻留一份,
+  不是峰值问题。省不到 24% 却要改 GEMM tiling,不划算。
+
+**方法论上的短板(留给下次):**
+
+- **ncu/nsys 级 profiling 没做** —— torch profiler 会把吞吐压到 1/10 并严重扭曲 NCCL,
+  今天所有结论都刻意避开了它。硬件计数器的口径(occupancy、stall 原因)始终没拿到。
+- **8K → 131K 那 20% 的降幅没查** —— 不是 top-K(top-K 的效果是让 131K 之后变平),
+  来源未知,约 5 ms/token。
 
 ---
 
