@@ -1,0 +1,38 @@
+[
+ {
+  "want": 8000,
+  "prompt_tokens": 8001,
+  "full_token_median": 8448.0,
+  "tok_s_median": 27.725,
+  "p10": 27.58,
+  "p90": 29.34,
+  "steps": 10
+ },
+ {
+  "want": 32000,
+  "prompt_tokens": 32001,
+  "full_token_median": 32256.0,
+  "tok_s_median": 26.35,
+  "p10": 26.15,
+  "p90": 27.64,
+  "steps": 10
+ },
+ {
+  "want": 65536,
+  "prompt_tokens": 65536,
+  "full_token_median": 65792.0,
+  "tok_s_median": 22.395,
+  "p10": 22.16,
+  "p90": 22.71,
+  "steps": 10
+ },
+ {
+  "want": 131072,
+  "prompt_tokens": 131071,
+  "full_token_median": 131328.0,
+  "tok_s_median": 18.075,
+  "p10": 17.91,
+  "p90": 18.17,
+  "steps": 10
+ }
+]

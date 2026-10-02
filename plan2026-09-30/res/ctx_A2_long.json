@@ -1,0 +1,20 @@
+[
+ {
+  "want": 155648,
+  "prompt_tokens": 155646,
+  "full_token_median": 155904,
+  "tok_s_median": 20.68,
+  "p10": 0.55,
+  "p90": 21.13,
+  "steps": 7
+ },
+ {
+  "want": 200704,
+  "prompt_tokens": 200701,
+  "full_token_median": 200960.0,
+  "tok_s_median": 20.57,
+  "p10": 0.42,
+  "p90": 21.03,
+  "steps": 8
+ }
+]

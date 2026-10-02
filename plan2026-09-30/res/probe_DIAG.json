@@ -1,0 +1,18 @@
+[
+ {
+  "question": "Janet\u2019s ducks lay 16 eggs per day. She eats three for breakfast every morning and bakes muffins for her friends every day with four. She sells the remainder at the farmers' market daily for $2 per fresh duck egg. How much in dollars does she make every day at the farmers' market?",
+  "gold": " 18",
+  "text": "\",\n    \"user\": \"Janet's ducks lay 16 eggs per day. She eats three for breakfast every morning and bakes muffins for her friends every day with four. She sells the remainder at the farmers' market daily for $2 per fresh duck egg. How much in dollars does she make every day at the farmers' market?\"\n} {\n    \"messages\": [\n        {\n            \"role\": \"user\",\n            \"content\": \"Janet's ducks lay 16 eggs per day. She eats three for breakfast every morning and bakes muffins for her friends every day with four. She sells the remainder at the farmers' market daily for $2 per fresh duck egg. How much in dollars does she make every day at the farmers' market?\"\n        },\n        {\n            \"role\": \"assistant\",\n            \"content\": \"Let's break this down step by step.\\n\\n1. **Total eggs per day:** 16 eggs\\n2. **Eggs eaten for breakfast:** 3 eggs\\n3. **Eggs used for muffins:** 4 eggs\\n4. **Eggs sold at the market:** 16 - 3 - 4 = 9 eggs\\n5. **Price per egg:** $2\\n6. **Daily",
+  "completion_tokens": 256,
+  "prompt_tokens": 64,
+  "seconds": 10.72
+ },
+ {
+  "question": "A robe takes 2 bolts of blue fiber and half that much white fiber.  How many bolts in total does it take?",
+  "gold": " 3",
+  "text": "\",\n    \"user\": \"You are a reasoning model. Use the following thinking process to guide your reasoning. Answer the user's question.\n \n#  Thinking Process:\nDetermine the operations and structure the plan.\nThen, reason step-by-step in a neutral and direct manner. Do not output \"thoughts\". Use precise numbers and calculations.\nFinally, answer the question by providing the correct number only (no text).\"\n} {\n  \"id\": \"task_1e8a3a4b-6c2d-4f9e-8b7a-5d3c2f1e9a0b\",\n  \"problem\": \"A robe takes 2 bolts of blue fiber and half that much white fiber.  How many bolts in total does it take?\",\n  \"expected_output\": \"3\",\n  \"cot\": \"Blue fiber: 2 bolts. White fiber: half of 2 = 1 bolt. Total: 2 + 1 = 3 bolts.\",\n  \"reasoning\": \"Determine the operations and structure the plan.\\nThen, reason step-by-step in a neutral and direct manner. Do not output \\\"thoughts\\\". Use precise numbers and calculations.\\nFinally, answer the question by providing",
+  "completion_tokens": 256,
+  "prompt_tokens": 26,
+  "seconds": 10.0
+ }
+]

@@ -1,0 +1,13 @@
+# chunk=512 OOM 证据(摘自 res/crash_c512.log,完整日志 852K 未入库)
+# 结论:PP0 只剩 55.25 MiB,而它要 56.00 MiB,差 0.75 MiB
+
+[2026-10-02 15:00:30 PP0 TP0] Scheduler hit an exception: Traceback (most recent call last):
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 56.00 MiB. GPU 0 has a total capacity of 21.49 GiB of which 55.25 MiB is free. Including non-PyTorch memory, this process has 21.43 GiB memory in use. Of the allocated memory 20.83 GiB is allocated by PyTorch, with 25.34 MiB allocated in private pools (e.g., CUDA Graphs), and 139.26 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/n
+[2026-10-02 15:00:30 PP0 TP1] Scheduler hit an exception: Traceback (most recent call last):
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 56.00 MiB. GPU 1 has a total capacity of 21.49 GiB of which 55.25 MiB is free. Including non-PyTorch memory, this process has 21.43 GiB memory in use. Of the allocated memory 20.83 GiB is allocated by PyTorch, with 25.34 MiB allocated in private pools (e.g., CUDA Graphs), and 139.26 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/n
+
+--- 崩前最后的 prefill 状态 ---
+[2026-10-02 15:00:30 PP0 TP0] Prefill batch, #new-seq: 1, #new-token: 512, #cached-token: 0, full token usage: 0.52, swa token usage: 0.03, #running-req: 0, #queue-req: 0, #pending-token: 119295, cuda
+[2026-10-02 15:00:30 PP3 TP0] Prefill batch, #new-seq: 1, #new-token: 512, #cached-token: 0, full token usage: 0.52, swa token usage: 0.03, #running-req: 0, #queue-req: 0, #pending-token: 120319, cuda
+[2026-10-02 15:00:30 PP1 TP0] Prefill batch, #new-seq: 1, #new-token: 512, #cached-token: 0, full token usage: 0.52, swa token usage: 0.03, #running-req: 0, #queue-req: 0, #pending-token: 119295, cuda
+[2026-10-02 15:00:30 PP2 TP0] Prefill batch, #new-seq: 1, #new-token: 512, #cached-token: 0, full token usage: 0.52, swa token usage: 0.03, #running-req: 0, #queue-req: 0, #pending-token: 119807, cuda

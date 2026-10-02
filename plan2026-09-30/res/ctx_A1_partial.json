@@ -1,0 +1,29 @@
+[
+ {
+  "want": 4000,
+  "prompt_tokens": 4001,
+  "full_token_median": 4096,
+  "tok_s_median": 27.29,
+  "p10": 1.56,
+  "p90": 28.41,
+  "steps": 3
+ },
+ {
+  "want": 16000,
+  "prompt_tokens": 16001,
+  "full_token_median": 16128,
+  "tok_s_median": 26.72,
+  "p10": 12.33,
+  "p90": 26.75,
+  "steps": 3
+ },
+ {
+  "want": 32000,
+  "prompt_tokens": 32001,
+  "full_token_median": 32256,
+  "tok_s_median": 25.93,
+  "p10": 14.01,
+  "p90": 25.95,
+  "steps": 3
+ }
+]
